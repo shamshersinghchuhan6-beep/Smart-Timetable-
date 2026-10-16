@@ -1,11 +1,165 @@
 <!DOCTYPE html>
-<html lang="hi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Smart Timetable</title>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}body{background:#0f172a;color:white;min-height:100vh;padding:15px}.container{max-width:500px;margin:auto}.card{background:#1e293b;border-radius:20px;padding:20px;margin-top:15px;border:1px solid #334155}h1{color:#38bdf8;text-align:center;font-size:26px}h2{color:#38bdf8;margin-bottom:15px;font-size:20px}.step{display:none}.step.active{display:block;animation:fade.3s}@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}label{display:block;margin:12px 0 6px;color:#cbd5e1;font-size:14px}input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#0f172a;color:white;font-size:15px}.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.opt{padding:12px;border:1px solid #334155;border-radius:10px;text-align:center;cursor:pointer;background:#0f172a}.opt.selected{background:#38bdf8;color:#0f172a;font-weight:bold;border-color:#38bdf8}.opt2{grid-column:span 2}button{width:100%;padding:14px;border:none;border-radius:12px;background:#38bdf8;color:#0f172a;font-weight:bold;font-size:16px;margin-top:20px;cursor:pointer}.progress{height:6px;background:#1e293b;border-radius:10px;overflow:hidden;margin:15px 0}.bar{height:100%;background:#38bdf8;transition:.3s}table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}th{background:#38bdf8;color:#0f172a;padding:10px}td{padding:10px;text-align:center;border:1px solid #334155}.badge{padding:3px 8px;border-radius:20px;font-size:11px}.play{background:#22c55e20;color:#22c55e;border:1px solid #22c55e40}.study{background:#38bdf820;color:#38bdf8;border:1px solid #38bdf840}.sleep{background:#a78bfa20;color:#a78bfa;border:1px solid #a78bfa40}</style></head><body><div class="container"><h1>📅 Smart Timetable</h1><p style="text-align:center;color:#94a3b8;font-size:13px">Har bache ka apna personal time table</p><div class="progress"><div class="bar" id="bar" style="width:20%"></div></div><div class="step active" id="s1"><div class="card"><h2>👋 Chalo shuru karte hain!</h2><label>Tumhara Naam kya hai?</label><input id="sname" placeholder="Jaise - Sagar"><label>Class kaunsi hai?</label><select id="class"><option value="">Select Class</option><option>Class 1-5</option><option>Class 6-8</option><option>Class 9-10</option><option>Class 11-12</option></select></div><button onclick="goNext(2)">Aage Badho →</button></div><div class="step" id="s2"><div class="card"><h2>📚 Padna kya pasand hai?</h2><label>2 subjects chuno</label><div class="options"><div class="opt" onclick="toggleSub(this)">Math</div><div class="opt" onclick="toggleSub(this)">Science</div><div class="opt" onclick="toggleSub(this)">English</div><div class="opt" onclick="toggleSub(this)">Hindi</div><div class="opt" onclick="toggleSub(this)">SST</div><div class="opt" onclick="toggleSub(this)">Computer</div></div></div><button onclick="goNext(3)">Aage Badho →</button></div><div class="step" id="s3"><div class="card"><h2>⏰ Kab padna pasand hai?</h2><div class="options"><div class="opt" onclick="sel(this,'study','Morning')">🌅 Subah</div><div class="opt" onclick="sel(this,'study','Evening')">🌆 Shaam</div><div class="opt opt2" onclick="sel(this,'study','Both')">Dono Time 😊</div></div><label style="margin-top:20px">Kitna khelna pasand hai?</label><div class="options"><div class="opt" onclick="sel(this,'play','1 Hour')">1 Ghanta</div><div class="opt" onclick="sel(this,'play','2 Hour')">2 Ghante</div></div></div><button onclick="goNext(4)">Aage Badho →</button></div><div class="step" id="s4"><div class="card"><h2>😴 Sone Jagane ka Time?</h2><label>Subah kitne baje uthte ho?</label><select id="wake"><option>5 AM</option><option selected>6 AM</option><option>7 AM</option><option>8 AM</option></select><label>Raat ko kitne baje sote ho?</label><select id="sleep"><option>9 PM</option><option selected>10 PM</option><option>11 PM</option><option>12 AM</option></select><label>Goal kya hai?</label><div class="options"><div class="opt" onclick="sel(this,'goal','Topper')">🏆 Topper</div><div class="opt" onclick="sel(this,'goal','Pass')">Pass</div><div class="opt opt2" onclick="sel(this,'goal','Masti+Padhai')">Masti + Padhai</div></div></div><button onclick="generate()">✨ Mera Timetable Banao</button></div><div class="step" id="s5"><div class="card"><h2 id="greet"></h2><p id="summary" style="color:#94a3b8;font-size:13px;margin-top:5px"></p><div style="overflow-x:auto"><table id="tt"><tr><th>Time</th><th>Kaam</th><th>Type</th></tr></table></div></div><button onclick="location.reload()" style="background:#1e293b;color:white;border:1px solid #334155">🔄 Naya Banao</button></div></div><script>
-let data={study:'',play:'',goal:'',fav:[]};
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Timetable - Final Mix + Animation</title>
+
+<!-- ADSENSE -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4281142756045289" crossorigin="anonymous"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+body { background:#0f172a; color:white; min-height:100vh; padding:15px; }
+.container { max-width:500px; margin:auto; }
+.card {
+  background:#1e293b; border-radius:20px; padding:20px; margin-top:15px; border:1px solid #334155;
+  animation: slideUp 0.4s ease;
+}
+h1 { color:#38bdf8; text-align:center; font-size:26px; animation: pop 0.5s; }
+h2 { color:#38bdf8; margin-bottom:12px; font-size:18px; }
+
+.step { display:none; }
+.step.active { display:block; animation: fadeSlide 0.4s ease; }
+
+@keyframes fadeSlide {
+  from { opacity:0; transform: translateY(20px); }
+  to { opacity:1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity:0; transform: translateY(15px); }
+  to { opacity:1; transform: translateY(0); }
+}
+@keyframes pop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+label { display:block; margin:12px 0 6px; color:#cbd5e1; font-size:13px; }
+input, select {
+  width:100%; padding:12px; border-radius:10px; border:1px solid #334155;
+  background:#0f172a; color:white; font-size:14px; transition:0.3s;
+}
+input:focus, select:focus { border-color:#38bdf8; box-shadow:0 0 0 2px #38bdf840; outline:none; }
+.options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+.opt {
+  padding:12px; border:1px solid #334155; border-radius:10px; text-align:center; cursor:pointer;
+  background:#0f172a; font-size:13px; transition: all 0.2s ease;
+}
+.opt:hover { transform: scale(1.03); border-color:#38bdf8; }
+.opt.selected {
+  background:#38bdf8; color:#0f172a; font-weight:bold; border-color:#38bdf8;
+  animation: pop 0.3s ease;
+  box-shadow:0 0 15px #38bdf840;
+}
+.opt2 { grid-column: span 2; }
+button {
+  width:100%; padding:14px; border:none; border-radius:12px; background:#38bdf8;
+  color:#0f172a; font-weight:bold; font-size:15px; margin-top:20px; cursor:pointer;
+  transition:0.2s;
+}
+button:hover { transform: scale(1.02); box-shadow:0 5px 20px #38bdf860; }
+button:active { transform: scale(0.98); }
+
+.progress { height:6px; background:#1e293b; border-radius:10px; overflow:hidden; margin:15px 0; }
+.bar { height:100%; background:linear-gradient(90deg,#38bdf8,#22d3ee); transition: width 0.5s ease; width:20%; }
+
+table { width:100%; border-collapse:collapse; margin-top:15px; font-size:12px; }
+th { background:#38bdf8; color:#0f172a; padding:10px; }
+td { padding:9px; text-align:center; border:1px solid #334155; animation: fadeSlide 0.3s ease; }
+.badge { padding:3px 8px; border-radius:20px; font-size:10px; font-weight:bold; display:inline-block; animation: pop 0.4s; }
+.play { background:#22c55e20; color:#22c55e; border:1px solid #22c55e40; }
+.study { background:#38bdf820; color:#38bdf8; border:1px solid #38bdf840; }
+.sleep { background:#a78bfa20; color:#a78bfa; border:1px solid #a78bfa40; }
+.hard { background:#ef444420; color:#ef4444; border:1px solid #ef444440; }
+
+.ad-box {
+  background:#1e293b; border:1px dashed #334155; border-radius:12px; padding:10px;
+  margin:15px 0; text-align:center; min-height:90px; display:flex; align-items:center; justify-content:center;
+  animation: slideUp 0.5s;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📅 Smart Timetable</h1>
+  <p style="text-align:center;color:#94a3b8;font-size:12px">5 AM | 8-3:30 School | Hard Focus + Animations</p>
+
+  <div class="progress"><div class="bar" id="bar"></div></div>
+
+  <div class="ad-box">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4281142756045289" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+  </div>
+
+  <div class="step active" id="s1">
+    <div class="card">
+      <h2>👋 Chalo shuru karte hain!</h2>
+      <label>Naam?</label><input id="sname" placeholder="Jaise - Sagar">
+      <label>Class?</label><select id="class"><option value="">Select</option><option>Class 1-5</option><option>Class 6-8</option><option>Class 9-10</option><option>Class 11-12</option></select>
+    </div>
+    <button onclick="goNext(2)">Aage Badho →</button>
+  </div>
+
+  <div class="step" id="s2">
+    <div class="card">
+      <h2>😰 Kaunse HARD Hain? (2 chuno)</h2>
+      <div class="options">
+        <div class="opt" onclick="toggleSub(this)">Math</div><div class="opt" onclick="toggleSub(this)">Science</div>
+        <div class="opt" onclick="toggleSub(this)">English</div><div class="opt" onclick="toggleSub(this)">Hindi</div>
+        <div class="opt" onclick="toggleSub(this)">SST</div><div class="opt" onclick="toggleSub(this)">Computer</div>
+      </div>
+    </div>
+    <button onclick="goNext(3)">Aage →</button>
+  </div>
+
+  <div class="step" id="s3">
+    <div class="card">
+      <h2>⏰ Padhai Time?</h2>
+      <div class="options">
+        <div class="opt" onclick="sel(this,'study','Morning')">🌅 Subah</div>
+        <div class="opt" onclick="sel(this,'study','Evening')">🌆 Shaam</div>
+        <div class="opt opt2" onclick="sel(this,'study','Both')">Dono 💪</div>
+      </div>
+      <label style="margin-top:15px">Khelna?</label>
+      <div class="options"><div class="opt" onclick="sel(this,'play','1 Hour')">1 Ghanta</div><div class="opt" onclick="sel(this,'play','2 Hour')">2 Ghante</div></div>
+    </div>
+    <button onclick="goNext(4)">Aage →</button>
+  </div>
+
+  <div class="step" id="s4">
+    <div class="card">
+      <h2>😴 Routine</h2>
+      <label>Uthte?</label><select id="wake"><option selected>5 AM</option><option>6 AM</option></select>
+      <label>Sote?</label><select id="sleep"><option selected>10 PM</option><option>11 PM</option></select>
+      <label>Goal?</label>
+      <div class="options"><div class="opt" onclick="sel(this,'goal','Topper')">🏆 Topper</div><div class="opt" onclick="sel(this,'goal','Masti+Padhai')">Masti+Padhai</div></div>
+    </div>
+    <button onclick="generate()">✨ Timetable Banao</button>
+  </div>
+
+  <div class="step" id="s5">
+    <div class="card"><h2 id="greet"></h2><p id="summary" style="color:#94a3b8;font-size:12px;margin-top:5px"></p><div style="overflow-x:auto"><table id="tt"></table></div></div>
+    <div class="ad-box" style="margin-top:20px">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4281142756045289" data-ad-slot="0987654321" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <button onclick="location.reload()" style="background:#1e293b;color:white;border:1px solid #334155">🔄 Naya Banao</button>
+  </div>
+</div>
+
+<script>
+let data={study:'',play:'',goal:'',hard:[]};
 function goNext(n){
   let sname=document.getElementById('sname').value;
   let cls=document.getElementById('class').value;
-  if(n==2 && (!sname ||!cls)){alert('Naam aur Class bharo');return;}
+  if(n==2 && (!sname||!cls)){alert('Naam aur Class bharo');return;}
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
   document.getElementById('bar').style.width=(n*20)+'%';
@@ -13,35 +167,42 @@ function goNext(n){
 function toggleSub(el){
   el.classList.toggle('selected');
   let v=el.innerText;
-  if(data.fav.includes(v)) data.fav=data.fav.filter(x=>x!=v);
-  else {if(data.fav.length<2) data.fav.push(v); else{alert('Sirf 2 chuno');el.classList.remove('selected')}}
+  if(data.hard.includes(v)) data.hard=data.hard.filter(x=>x!=v);
+  else { if(data.hard.length<2) data.hard.push(v); else {alert('Sirf 2 chuno');el.classList.remove('selected');} }
 }
 function sel(el,type,val){
   el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  data[type]=val;
+  el.classList.add('selected'); data[type]=val;
 }
 function generate(){
-  if(!data.study ||!data.play ||!data.goal){alert('Sab options chuno');return;}
+  if(!data.study||!data.play||!data.goal||data.hard.length==0){alert('Sab chuno');return;}
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
   document.getElementById('s5').classList.add('active');
   document.getElementById('bar').style.width='100%';
   let nm=document.getElementById('sname').value||'Dost';
   let cls=document.getElementById('class').value;
   document.getElementById('greet').innerText='🔥 '+nm+' ka Timetable Ready!';
-  document.getElementById('summary').innerText='Class: '+cls+' | Pasand: '+data.fav.join(', ')+' | Padhai: '+data.study;
+  document.getElementById('summary').innerText='Hard: '+data.hard.join(', ')+' | School: 8AM-3:30PM';
   let wake=document.getElementById('wake').value;
   let sleep=document.getElementById('sleep').value;
   let rows=[];
-  if(data.study.includes('Morning') || data.study.includes('Both')) rows.push(['6-8 AM',(data.fav[0]||'Math')+' + '+(data.fav[1]||'Science'),'study']);
-  rows.push(['8-9 AM','School Ready + Breakfast','sleep']);
-  rows.push(['9-2 PM','School / Coaching - '+cls,'study']);
-  rows.push(['2-3 PM','Lunch + Rest','sleep']);
-  if(data.play=='1 Hour') rows.push(['4-5 PM','Khelna + Masti - '+data.play,'play']); else rows.push(['4-6 PM','Khelna - '+data.play,'play']);
-  if(data.study.includes('Evening') || data.study.includes('Both')){rows.push(['6-8 PM','Homework + '+(data.fav[0]||'Eng')+' Revision','study']);rows.push(['8-9 PM','Dinner + '+(data.fav[1]||'SST'),'study']);} else {rows.push(['6-7 PM','Homework','study']);rows.push(['7-8 PM','TV / Thoda Rest','play']);}
-  rows.push([sleep,'Sona - Kal '+wake+' uthna!','sleep']);
+  rows.push([wake+' - 5:30','Uthna + Exercise','sleep']);
+  rows.push(['5:30 - 7:00','HARD '+data.hard[0]+' Padhai','hard']);
+  rows.push(['7:00 - 8:00','Ready + Breakfast','sleep']);
+  rows.push(['8:00 - 3:30 PM','🏫 SCHOOL TIME','study']);
+  rows.push(['3:30 - 4:00','Lunch + Rest','sleep']);
+  rows.push([data.play=='1 Hour'?'4:00-5:00':'4:00-6:00','Khelna - '+data.play,'play']);
+  rows.push(['6:00 - 8:00','Homework + '+data.hard[1]+' Revision','hard']);
+  rows.push(['8:00 - 9:30','Dinner + Easy','study']);
+  rows.push([sleep,'Sona - Kal '+wake+'!','sleep']);
   let tt=document.getElementById('tt');
   tt.innerHTML='<tr><th>Time</th><th>Kaam</th><th>Type</th></tr>';
-  rows.forEach(r=>{let c=r[2];tt.innerHTML+='<tr><td>'+r[0]+'</td><td style="text-align:left">'+r[1]+'</td><td><span class="badge '+c+'">'+r[2]+'</span></td></tr>';});
+  rows.forEach((r,i)=>{
+    setTimeout(()=>{
+      tt.innerHTML+='<tr><td>'+r[0]+'</td><td style="text-align:left">'+r[1]+'</td><td><span class="badge '+r[2]+'">'+r[2]+'</span></td></tr>';
+    }, i*100);
+  });
 }
-</script></body></html>
+</script>
+</body>
+</html>
