@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart Timetable - Final Mix + Animation</title>
 
-<!-- ADSENSE -->
+<!-- ADSENSE - VERIFIED CODE -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4281142756045289" crossorigin="anonymous"></script>
 
 <style>
@@ -18,10 +18,8 @@ body { background:#0f172a; color:white; min-height:100vh; padding:15px; }
 }
 h1 { color:#38bdf8; text-align:center; font-size:26px; animation: pop 0.5s; }
 h2 { color:#38bdf8; margin-bottom:12px; font-size:18px; }
-
 .step { display:none; }
 .step.active { display:block; animation: fadeSlide 0.4s ease; }
-
 @keyframes fadeSlide {
   from { opacity:0; transform: translateY(20px); }
   to { opacity:1; transform: translateY(0); }
@@ -35,11 +33,6 @@ h2 { color:#38bdf8; margin-bottom:12px; font-size:18px; }
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-
 label { display:block; margin:12px 0 6px; color:#cbd5e1; font-size:13px; }
 input, select {
   width:100%; padding:12px; border-radius:10px; border:1px solid #334155;
@@ -65,10 +58,8 @@ button {
 }
 button:hover { transform: scale(1.02); box-shadow:0 5px 20px #38bdf860; }
 button:active { transform: scale(0.98); }
-
 .progress { height:6px; background:#1e293b; border-radius:10px; overflow:hidden; margin:15px 0; }
 .bar { height:100%; background:linear-gradient(90deg,#38bdf8,#22d3ee); transition: width 0.5s ease; width:20%; }
-
 table { width:100%; border-collapse:collapse; margin-top:15px; font-size:12px; }
 th { background:#38bdf8; color:#0f172a; padding:10px; }
 td { padding:9px; text-align:center; border:1px solid #334155; animation: fadeSlide 0.3s ease; }
@@ -77,12 +68,6 @@ td { padding:9px; text-align:center; border:1px solid #334155; animation: fadeSl
 .study { background:#38bdf820; color:#38bdf8; border:1px solid #38bdf840; }
 .sleep { background:#a78bfa20; color:#a78bfa; border:1px solid #a78bfa40; }
 .hard { background:#ef444420; color:#ef4444; border:1px solid #ef444440; }
-
-.ad-box {
-  background:#1e293b; border:1px dashed #334155; border-radius:12px; padding:10px;
-  margin:15px 0; text-align:center; min-height:90px; display:flex; align-items:center; justify-content:center;
-  animation: slideUp 0.5s;
-}
 </style>
 </head>
 <body>
@@ -92,11 +77,6 @@ td { padding:9px; text-align:center; border:1px solid #334155; animation: fadeSl
   <p style="text-align:center;color:#94a3b8;font-size:12px">5 AM | 8-3:30 School | Hard Focus + Animations</p>
 
   <div class="progress"><div class="bar" id="bar"></div></div>
-
-  <div class="ad-box">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4281142756045289" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-  </div>
 
   <div class="step active" id="s1">
     <div class="card">
@@ -146,10 +126,6 @@ td { padding:9px; text-align:center; border:1px solid #334155; animation: fadeSl
 
   <div class="step" id="s5">
     <div class="card"><h2 id="greet"></h2><p id="summary" style="color:#94a3b8;font-size:12px;margin-top:5px"></p><div style="overflow-x:auto"><table id="tt"></table></div></div>
-    <div class="ad-box" style="margin-top:20px">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4281142756045289" data-ad-slot="0987654321" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-    </div>
     <button onclick="location.reload()" style="background:#1e293b;color:white;border:1px solid #334155">🔄 Naya Banao</button>
   </div>
 </div>
